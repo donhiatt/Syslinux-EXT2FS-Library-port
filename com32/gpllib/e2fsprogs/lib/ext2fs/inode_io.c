@@ -74,7 +74,8 @@ static struct struct_io_manager struct_inode_manager = {
 	NULL,
 	NULL,
 	inode_read_blk64,
-	inode_write_blk64
+	inode_write_blk64,
+	{0}
 };
 
 io_manager inode_io_manager = &struct_inode_manager;
