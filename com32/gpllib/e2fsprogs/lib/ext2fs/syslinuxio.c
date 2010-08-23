@@ -43,7 +43,7 @@ struct driveinfo drive;
 static PARTITION *requested_partition = NULL;
 static int found_partition = 0;
 
-static void parse_partition_callback(struct driveinfo *drive_info,
+static void parse_partition_callback(struct driveinfo *drive_info EXT2FS_ATTR((unused)),
 				     struct part_entry *ptab,
 				     int partition_offset,
 				     int nb_partitions_seen)
@@ -187,7 +187,9 @@ static io_channel alloc_io_channel(PARTITION *part)
  * Open the 'name' partition, initialize all information structures
  * we need to keep and create libext2fs I/O manager.
  */
-static errcode_t syslinux_open(const char *dev, int flags, io_channel *channel)
+static errcode_t syslinux_open(const char *dev, 
+			       int flags EXT2FS_ATTR((unused)),
+			       io_channel *channel)
 {
   int ret = 0;
   char *p1;
@@ -256,9 +258,7 @@ static errcode_t syslinux_close(io_channel channel)
 
 static errcode_t syslinux_set_blksize(io_channel channel, int blksize)
 {
-  printf("SET BLOCK!! %d\n", blksize);
   channel->block_size = blksize;
-
   return 0;
 }
 
@@ -276,7 +276,6 @@ static errcode_t syslinux_read_blk(io_channel channel,
   EXT2_CHECK_MAGIC(channel, EXT2_ET_MAGIC_IO_CHANNEL);
   part = (PARTITION*)channel->private_data;
   
-  printf("read: %d count:%d bz=%d (pstart=%d)\n", block, count, channel->block_size, part->start);
   size = (size_t)((count < 0) ? -count : count * channel->block_size);
   lba  = (ext2_loff_t)(((block * channel->block_size) / SECTOR) + part->start);
 
@@ -298,12 +297,6 @@ static errcode_t syslinux_read_blk(io_channel channel,
       return EFAULT;
     }
   }
-
-#if 0
-  ret = dev_read(part->phys, 
-		 size < SECTOR ? sector_buf : buf, 
-		 lba, size < SECTOR ? 1 : size/SECTOR);
-#endif
 
   ret = read_sectors(d, 
 		     size < SECTOR ? sector_buf : buf, 
@@ -356,7 +349,7 @@ static errcode_t syslinux_write_blk(io_channel channel,
   return 0;
 }
 
-static errcode_t syslinux_flush(io_channel channel)
+static errcode_t syslinux_flush(io_channel channel EXT2FS_ATTR((unused)))
 {
   /*
    * No buffers, no flush...

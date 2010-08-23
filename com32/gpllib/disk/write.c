@@ -13,6 +13,7 @@
  * ----------------------------------------------------------------------- */
 
 #include <com32.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,6 +22,25 @@
 #include <disk/read.h>
 #include <disk/util.h>
 #include <disk/write.h>
+
+/**
+ * dev_write - write to a drive
+ * @drive:	Drive number
+ * @buf:	Pre-allocated buffer for output
+ * @lba:	Position to start writing to
+ * @sectors:	Number of sectors to write
+ *
+ * High-level routine to read from a hard drive.
+ * Return the number of sectors written on success or -1 on failure.
+ * errno_disk contains the error number.
+ **/
+int dev_write(int drive, const void *buf, unsigned long int lba, int sectors)
+{
+    struct driveinfo drive_info;
+    drive_info.disk = drive;
+    
+    return write_sectors(&drive_info, lba, buf, sectors);
+}
 
 /**
  * write_sectors - write several sectors from disk
@@ -32,14 +52,18 @@
  * Return the number of sectors write on success or -1 on failure.
  * errno_disk contains the error number.
  **/
-int write_sectors(const struct driveinfo *drive_info, const unsigned int lba,
+int write_sectors(const struct driveinfo *drive_info, const unsigned long int lba,
 		  const void *data, const int size)
 {
     com32sys_t inreg, outreg;
     struct ebios_dapa *dapa = __com32.cs_bounce;
-    void *buf = (char *)__com32.cs_bounce + size;
+    void *buf = (char *)__com32.cs_bounce + (size * SECTOR);
 
-    memcpy(buf, data, size);
+    if (get_drive_parameters((struct driveinfo *)drive_info) == -1) {
+      return -1;
+    }
+
+    memcpy(buf, data, (size * SECTOR));
     memset(&inreg, 0, sizeof inreg);
 
     if (drive_info->ebios) {
@@ -95,7 +119,7 @@ int write_sectors(const struct driveinfo *drive_info, const unsigned int lba,
  * @data:		Buffer to write
  **/
 int write_verify_sector(struct driveinfo *drive_info,
-			const unsigned int lba, const void *data)
+			const unsigned long int lba, const void *data)
 {
     return write_verify_sectors(drive_info, lba, data, SECTOR);
 }
@@ -108,7 +132,7 @@ int write_verify_sector(struct driveinfo *drive_info,
  * @size:		Size of the buffer (number of sectors)
  **/
 int write_verify_sectors(struct driveinfo *drive_info,
-			 const unsigned int lba,
+			 const unsigned long int lba,
 			 const void *data, const int size)
 {
     char *rb = malloc(SECTOR * size * sizeof(char));
@@ -121,6 +145,7 @@ int write_verify_sectors(struct driveinfo *drive_info,
 	return -1;		/* Readback failure */
 
     status = memcmp(data, rb, SECTOR * size);
+    printf("write lba=0x%lx verify = %d\n", lba, status);
     free(rb);
     return status ? -1 : 0;
 }

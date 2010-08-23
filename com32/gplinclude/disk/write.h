@@ -16,11 +16,11 @@
 #define _WRITE_H_
 
 #include <disk/geom.h>
-
-int write_sectors(const struct driveinfo *, const unsigned int,
+int dev_write(int, const void *, unsigned long int, int);
+int write_sectors(const struct driveinfo *, const unsigned long int,
 		  const void *, const int);
 int write_verify_sector(struct driveinfo *drive_info,
-			const unsigned int, const void *);
+			const unsigned long int, const void *);
 int write_verify_sectors(struct driveinfo *,
-			 const unsigned int, const void *, const int);
+			 const unsigned long int, const void *, const int);
 #endif

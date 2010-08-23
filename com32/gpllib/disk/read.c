@@ -13,6 +13,7 @@
  * ----------------------------------------------------------------------- */
 
 #include <com32.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -38,9 +39,16 @@ int read_mbr(int drive, void *buf)
 {
     struct driveinfo drive_info;
     drive_info.disk = drive;
-
+    
+    printf("read_mbr: drive=0x%x\n", drive);
     /* MBR: lba = 0, 1 sector */
     return read_sectors(&drive_info, buf, 0, 1);
+}
+
+int new_read_mbr(struct driveinfo *drive_info, void *buf)
+{
+    /* MBR: lba = 0, 1 sector */
+    return read_sectors(drive_info, buf, 0, 1);
 }
 
 /**
@@ -54,7 +62,7 @@ int read_mbr(int drive, void *buf)
  * Return the number of sectors read on success or -1 on failure.
  * errno_disk contains the error number.
  **/
-int dev_read(int drive, void *buf, unsigned int lba, int sectors)
+int dev_read(int drive, void *buf, unsigned long int lba, int sectors)
 {
     struct driveinfo drive_info;
     drive_info.disk = drive;
@@ -73,15 +81,21 @@ int dev_read(int drive, void *buf, unsigned int lba, int sectors)
  * errno_disk contains the error number.
  **/
 int read_sectors(struct driveinfo *drive_info, void *data,
-		 const unsigned int lba, const int sectors)
+		 const unsigned long int lba, const int sectors)
 {
     com32sys_t inreg, outreg;
     struct ebios_dapa *dapa = __com32.cs_bounce;
     void *buf = (char *)__com32.cs_bounce + sectors * SECTOR;
     char *bufp = data;
 
+#if 0
+    printf("%s data=%p lba=%d count=%d\n", __FUNCTION__, data, lba, sectors);
+#endif    
+
+#if 0    
     if (get_drive_parameters(drive_info) == -1)
 	return -1;
+#endif
 
     memset(&inreg, 0, sizeof inreg);
 
