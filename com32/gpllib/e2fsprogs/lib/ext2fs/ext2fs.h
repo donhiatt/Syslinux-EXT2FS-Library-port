@@ -29,6 +29,10 @@ extern "C" {
 #define NO_INLINE_FUNCS
 #endif
 
+#if defined(HAVE_SYSLINUX_BUILD)
+#define NO_INLINE_FUNCS
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
+
 /*
  * Where the master copy of the superblock is located, and how big
  * superblocks are supposed to be.  We define SUPERBLOCK_SIZE because
@@ -186,6 +190,11 @@ typedef struct ext2_file *ext2_file_t;
  */
 #define EXT2_MKJOURNAL_V1_SUPER	0x0000001
 
+#if defined(HAVE_SYSLINUX_BUILD)
+#include <sys/time.h>
+#include <disk/common.h>
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
+
 struct struct_ext2_filsys {
 	errcode_t			magic;
 	io_channel			io;
@@ -291,13 +300,13 @@ struct struct_ext2_filsys {
 #define BLOCK_COUNT_TIND	(-3)
 #define BLOCK_COUNT_TRANSLATOR	(-4)
 
-#if 0
+#if defined(HAVE_SYSLINUX_BUILD)
 /*
  * Flags for ext2fs_move_blocks
  */
 #define EXT2_BMOVE_GET_DBLIST	0x0001
 #define EXT2_BMOVE_DEBUG	0x0002
-#endif
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
 
 /*
  * Generic (non-filesystem layout specific) extents structure
@@ -886,7 +895,9 @@ extern ext2_off_t ext2fs_file_get_size(ext2_file_t file);
 extern errcode_t ext2fs_file_set_size(ext2_file_t file, ext2_off_t size);
 
 /* finddev.c */
+#if !defined(HAVE_SYSLINUX_BUILD)
 extern char *ext2fs_find_block_device(dev_t device);
+#endif /* !defined(HAVE_SYSLINUX_BUILD) */
 
 /* flushb.c */
 extern errcode_t ext2fs_sync_device(int fd, int flushb);

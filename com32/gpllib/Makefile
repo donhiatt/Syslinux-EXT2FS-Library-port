@@ -6,9 +6,22 @@
 topdir = ../..
 include ../lib/MCONFIG
 
-REQFLAGS += -I../gplinclude
+EXT2LIBDIR    = e2fsprogs/lib
+EXT2LIB       = $(EXT2LIBDIR)/ext2fs 
+ETLIB         = $(EXT2LIBDIR)/et 
+EXT2LIBFLAGS  = -DHAVE_SYS_STAT_H -DHAVE_SYS_TYPES_H
+EXT2LIBFLAGS += -DHAVE_UNISTD_H -DHAVE_ERRNO_H
+EXT2LIBFLAGS += -DHAVE_SYSLINUX_BUILD
+EXT2LIBFLAGS += -g
+###EXT2LIBFLAGS += -DSYSLINUX_EXT2FS_TDB
 
-GPLDIRS := . disk dmi vpd
+REQFLAGS += -I../gplinclude
+REQFLAGS += -I../lib
+REQFLAGS += -I../../core/include
+REQFLAGS += -I../gpllib/e2fsprogs/lib
+REQFLAGS += $(EXT2LIBFLAGS)
+
+GPLDIRS := . disk dmi vpd $(EXT2LIB) $(ETLIB)
 LIBOBJS := $(foreach dir,$(GPLDIRS),$(patsubst %.c,%.o,$(wildcard $(dir)/*.c)))
 
 BINDIR   = /usr/bin

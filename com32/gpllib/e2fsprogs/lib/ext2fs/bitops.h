@@ -67,6 +67,10 @@ extern int ext2fs_unmark_block_bitmap(ext2fs_block_bitmap bitmap,
 				       blk_t block);
 extern int ext2fs_test_block_bitmap(ext2fs_block_bitmap bitmap, blk_t block);
 
+#if defined(HAVE_SYSLINUX_BUILD)
+typedef __u32 ino_t;
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
+
 extern int ext2fs_mark_inode_bitmap(ext2fs_inode_bitmap bitmap, ext2_ino_t inode);
 extern int ext2fs_unmark_inode_bitmap(ext2fs_inode_bitmap bitmap,
 				       ext2_ino_t inode);

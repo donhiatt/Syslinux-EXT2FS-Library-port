@@ -115,6 +115,11 @@ extern errcode_t io_channel_write_blk64(io_channel channel,
 /* unix_io.c */
 extern io_manager unix_io_manager;
 
+#if defined(HAVE_SYSLINUX_BUILD)
+/* syslinuxio.c */
+extern io_manager syslinux_io_manager;
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
+
 /* undo_io.c */
 extern io_manager undo_io_manager;
 extern errcode_t set_undo_io_backing_manager(io_manager manager);
