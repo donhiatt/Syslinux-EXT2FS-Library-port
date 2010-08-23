@@ -33,8 +33,10 @@ struct process_block_struct {
 };
 
 static int process_block(ext2_filsys fs, blk_t	*block_nr,
-			 e2_blkcnt_t blockcnt, blk_t ref_block,
-			 int ref_offset, void *priv_data)
+			 e2_blkcnt_t blockcnt, 
+			 blk_t ref_block EXT2FS_ATTR((unused)),
+			 int ref_offset  EXT2FS_ATTR((unused)),
+			 void *priv_data)
 {
 	struct process_block_struct *pb;
 	errcode_t	retval;
