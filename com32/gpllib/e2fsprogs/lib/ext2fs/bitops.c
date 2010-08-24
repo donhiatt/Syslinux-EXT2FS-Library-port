@@ -66,6 +66,14 @@ int ext2fs_test_bit(unsigned int nr, const void * addr)
 
 #endif	/* !_EXT2_HAVE_ASM_BITOPS_ */
 
+#if defined(HAVE_SYSLINUX_BUILD)
+void ext2fs_warn_bitmap(errcode_t errcode EXT2FS_ATTR((unused)), 
+			unsigned long arg EXT2FS_ATTR((unused)), 
+			const char *description EXT2FS_ATTR((unused)))
+{
+  /* does nothing */
+}
+#else
 void ext2fs_warn_bitmap(errcode_t errcode, unsigned long arg,
 			const char *description)
 {
@@ -76,3 +84,4 @@ void ext2fs_warn_bitmap(errcode_t errcode, unsigned long arg,
 		com_err(0, errcode, "#%lu", arg);
 #endif
 }
+#endif /* defined(HAVE_SYSLINUX_BUILD) */

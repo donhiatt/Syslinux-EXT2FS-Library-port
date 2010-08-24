@@ -20,7 +20,7 @@ void ext2fs_inode_alloc_stats2(ext2_filsys fs, ext2_ino_t ino,
 {
 	int	group = ext2fs_group_of_ino(fs, ino);
 
-#ifndef OMIT_COM_ERR
+#if !defined(OMIT_COM_ERR) && !defined(HAVE_SYSLINUX_BUILD)
 	if (ino > fs->super->s_inodes_count) {
 		com_err("ext2fs_inode_alloc_stats2", 0,
 			"Illegal inode number: %lu", (unsigned long) ino);
@@ -65,7 +65,7 @@ void ext2fs_block_alloc_stats(ext2_filsys fs, blk_t blk, int inuse)
 {
 	int	group = ext2fs_group_of_blk(fs, blk);
 
-#ifndef OMIT_COM_ERR
+#if !defined(OMIT_COM_ERR) && !defined(HAVE_SYSLINUX_BUILD)
 	if (blk >= fs->super->s_blocks_count) {
 		com_err("ext2fs_block_alloc_stats", 0,
 			"Illegal block number: %lu", (unsigned long) blk);

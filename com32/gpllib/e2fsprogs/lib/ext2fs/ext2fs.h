@@ -81,7 +81,11 @@ typedef __u32		ext2_dirhash_t;
 #include "ext2_err.h"
 #include "ext2_ext_attr.h"
 #else
+#if defined(HAVE_SYSLINUX_BUILD)
+typedef long int errcode_t;
+#else
 #include <et/com_err.h>
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
 #include <ext2fs/ext2_io.h>
 #include <ext2fs/ext2_err.h>
 #include <ext2fs/ext2_ext_attr.h>

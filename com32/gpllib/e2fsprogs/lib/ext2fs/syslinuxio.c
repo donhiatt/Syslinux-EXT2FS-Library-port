@@ -31,12 +31,10 @@
 #include <disk/swsusp.h>
 #include <disk/util.h>
 
-#include <et/com_err.h>
 #include <ext2fs/ext2fs.h>
 #include <ext2fs/ext2_types.h>
 #include <ext2fs/ext2_io.h>
 #include "syslinuxio.h"
-#include "et/com_err.h"
 #include "ext2_err.h"
 
 struct driveinfo drive;

@@ -42,6 +42,14 @@ struct ext2fs_struct_generic_bitmap {
  * Used by previously inlined function, so we have to export this and
  * not change the function signature
  */
+#if defined(HAVE_SYSLINUX_BUILD)
+void ext2fs_warn_bitmap2(ext2fs_generic_bitmap bitmap EXT2FS_ATTR((unused)), 
+			 int code EXT2FS_ATTR((unused)), 
+			 unsigned long arg EXT2FS_ATTR((unused)))
+{
+  /* does nothing */
+}
+#else
 void ext2fs_warn_bitmap2(ext2fs_generic_bitmap bitmap,
 			    int code, unsigned long arg)
 {
@@ -53,6 +61,7 @@ void ext2fs_warn_bitmap2(ext2fs_generic_bitmap bitmap,
 		com_err(0, bitmap->base_error_code + code, "#%lu", arg);
 #endif
 }
+#endif /* defined(HAVE_SYSLINUX_BUILD) */
 
 static errcode_t check_magic(ext2fs_generic_bitmap bitmap)
 {
