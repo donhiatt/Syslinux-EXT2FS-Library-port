@@ -26,6 +26,7 @@ LIBOBJS = \
 	strtoimax.o strtok.o strtol.o strtoll.o strtoul.o strtoull.o	\
 	strtoumax.o vfprintf.o vprintf.o vsnprintf.o vsprintf.o		\
 	asprintf.o vasprintf.o strlcpy.o strlcat.o			\
+	time.o								\
 	vsscanf.o zalloc.o						\
 	\
 	lmalloc.o lstrdup.o						\
