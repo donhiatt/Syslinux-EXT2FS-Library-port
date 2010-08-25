@@ -1,0 +1,50 @@
+README for ext2fs module.
+
+* Description
+  -----------
+  A sample module to exercise the EXT2FS library.
+
+* Compiling
+  ---------
+  * Just type 'make' and then copy 'ext2fs.c32' to your SYSLINUX boot disk.
+
+* Usage
+  -----
+  Usage: ext2fs.c32 /dev/hd[a-z][1-9] cmd cmd-options 
+  e.g. /dev/hda1 would be the first partition of the first (discovered) disk
+
+  Examples:
+  * Display a text file
+    ext2fs.c32 /dev/hdb1 cat /root/file.txt
+  * Copy a file
+    ext2fs.c32 /dev/hdb1 cp /root/file.txt /root/newfile.txt
+  * Display a directory
+    ext2fs.c32 /dev/hdb1 ls /boot
+  * Make a directory 
+    ext2fs.c32 /dev/hdb1 mkdir /foo
+  * Remove a file
+    ext2fs.c32 /dev/hdb1 rm /root/file.txt
+
+* WARNING, Caveat Emptor!!!
+  ----------
+  * Use this at YOUR OWN RISK. 
+
+* KNOWN BUGS (As of Wed Aug 25 14:09:33 PDT 2010)
+  ----------
+  * SYSLINUX does cache file entries so don't write to your boot disk.
+    This can be fixed in the future by exporting a SYSLINUX API to force
+    it to invalidate/flush its cache.
+
+  * For disk read/write I am currently using modified gpllib/disk/* code.
+    These changes will probably break other modules and I plan to revert them
+    when I switch to the new "disklib" branch in the very near future.
+
+  * Under QEMU, I create a 10G image and installed Ubuntu 10.04 (EXT4)
+    and can not get a directory of "/etc"
+
+  * Copy a file uses hard-coded file permissions &755, gid=uid=0)
+
+* Questions, comments, Bug reports (Patches appreciated!)
+  -------------------------------------------------------
+  * donhiatt(at)gmail(dot)com
+
