@@ -1,13 +1,16 @@
 /*
  * syslinuxio.c -- Disk I/O module for the ext2fs/SYSLINUX library
+ *
+ * Copyright 2010 Don Hiatt - All Rights Reserved
+ * This file may be distributed under the terms of the GNU LGPL
+ * (GNU Library "Lesser" General Public License)
  * 
  * Based on:
  *   v1.0 Disk I/O include file for the ext2fs/DOS library.
  *   Copyright (c) 1997 Mark Habersack
  *
- * This file may be distributed under the terms of the GNU Public License.
- *
  */
+
 #ifndef __syslinuxio_h
 #define __syslinuxio_h
 
