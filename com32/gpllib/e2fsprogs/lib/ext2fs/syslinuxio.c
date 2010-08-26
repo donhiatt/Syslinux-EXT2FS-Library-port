@@ -1,7 +1,9 @@
 /*
  * syslinuxio.c -- Disk I/O module for the ext2fs/SYSLINUX library
-
- * This file may be distributed under the terms of the GNU LGPL.
+ *
+ * Copyright 2010 Don Hiatt - All Rights Reserved
+ * This file may be distributed under the terms of the GNU LGPL
+ * (GNU Lesser General Public License)
  * 
  * Based on:
  *   dosio.c -- Disk I/O module for the ext2fs/DOS library.
